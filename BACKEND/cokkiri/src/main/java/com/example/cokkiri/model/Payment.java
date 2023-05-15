@@ -1,9 +1,6 @@
 package com.example.cokkiri.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,9 +18,9 @@ public class Payment {
 
     //거래 id
     @Id
-    @GeneratedValue
+    @GeneratedValue()
     @Column
-    private String id;
+    private int id;
 
     //결제 한 사람
     @Column
