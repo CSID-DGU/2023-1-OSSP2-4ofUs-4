@@ -296,11 +296,21 @@ public class MatchingService {
         return matchedlist;
     }
 
+    //수업 매칭 Id로 찾아서 반환
+    public List<ClassMatchedList> findClassMatchingById(String id){
+        return classMatchedListRepository.findByStudentIdListContains(id);
+    }
+
     //공강 매칭 전부 반환
     public List<PublicMatchedList> findAllPublicMatching(){
         List<PublicMatchedList> matchedlist = new ArrayList<>();
         publicMatchedListRepository.findAll().forEach(e->matchedlist.add(e));
         return matchedlist;
+    }
+    
+    //공강 매칭 Id로 찾아서 반환
+    public List<PublicMatchedList> findPublicMatchingById(String id){
+        return publicMatchedListRepository.findByStudentIdListContains(id);
     }
 
 }

@@ -5,6 +5,7 @@ import com.example.cokkiri.model.Payment;
 import com.example.cokkiri.model.PublicMatchedList;
 import com.example.cokkiri.model.User;
 //import com.example.cokkiri.service.MailSendService;
+import com.example.cokkiri.repository.MatchedListRepository;
 import com.example.cokkiri.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,11 @@ public class UserController {
     @PostMapping("/loginAdmin")
     public ResponseEntity <Boolean> loginAdmin(String id,String password){
         return new ResponseEntity<Boolean>(userService.loginAdmin(id,password),HttpStatus.OK);
+    }
+
+    @GetMapping("/emailCheck")
+    public boolean emailCheck(String id){
+        return userService.existsBysId(id);
     }
 
     //회원가입 처리 부분
@@ -113,6 +119,19 @@ public class UserController {
         //관리자페이지에서 이름으로 유저 결제내역 조회
         List<Payment> payments = paymentService.findById(id);
         return new ResponseEntity<List<Payment>>(payments,HttpStatus.OK);
+    }
+
+    //mypage 에서 id로 자기의 수업매칭 조회
+    @GetMapping("userMypage/classMatchedList")
+    public ResponseEntity<List<ClassMatchedList>> getUserClassMatchedList(@RequestParam(value = "userId")String id){
+        List<ClassMatchedList> classMatchedLists = matchingService.findClassMatchingById(id);
+        return new ResponseEntity<List<ClassMatchedList>>(classMatchedLists,HttpStatus.OK);
+    }
+
+    @GetMapping("userMypage/publicMatchedList")
+    public ResponseEntity<List<PublicMatchedList>> getUserPublicMatchedList(@RequestParam(value = "userId")String id){
+        List<PublicMatchedList> publicMatchedLists = matchingService.findPublicMatchingById(id);
+        return new ResponseEntity<List<PublicMatchedList>>(publicMatchedLists,HttpStatus.OK);
     }
 
 
