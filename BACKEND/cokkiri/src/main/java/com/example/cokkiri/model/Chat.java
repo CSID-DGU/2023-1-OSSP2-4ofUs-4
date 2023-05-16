@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
@@ -25,7 +26,7 @@ public class Chat {
     
     //채팅방 아이디
     @Column
-    private int chattingId;
+    private int matchingId;
 
     @Column
     //매칭타입
@@ -40,7 +41,7 @@ public class Chat {
     private String content;
     
     //채팅 친 시간
-    @CreatedDate
+    @CreationTimestamp
     @Column
     private LocalDateTime sendDate;
 }
