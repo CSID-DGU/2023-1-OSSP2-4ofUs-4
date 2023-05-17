@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -18,8 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 
-
-@Service("service")
+@Service("matching")
 public class MatchingService {
     private static final Logger LOGGER = LoggerFactory.getLogger(MatchingService.class);
     // 싱글스레드 호출
@@ -74,63 +72,63 @@ public class MatchingService {
 
     // 겹치는 시간 확인 알고리즘
     public static List<LocalTime> findDuplicatTime(List<LocalTime>user , List<LocalTime>lastUser) {
-            LocalTime userStartTime = user.get(0); // 비교할 user 매칭가능 시작시간
-            LocalTime userEndTime = user.get(1);
-            LocalTime lastUserStartTime = lastUser.get(0); // 마지막으로 배열에 들어온 user 매칭가능 시작시간
-            LocalTime lastUserEndTime = lastUser.get(1);
-            // 겹치는 시간 파악 후
-            LocalTime startTime = null;
-            LocalTime endTime = null;
-            if(userStartTime.isAfter(lastUserStartTime)){
-                if(lastUserEndTime.isBefore(userStartTime) || lastUserEndTime.equals(userStartTime)){
-                    System.out.println("두 user는 시간이 겹치지 않습니다.");
-                    startTime = null;
-                    endTime = null;
-                }
-                else if(userEndTime.isAfter(lastUserEndTime)){
-                    startTime = userStartTime;
-                    endTime = lastUserEndTime;
-                }else if(userEndTime.isBefore(lastUserEndTime)){
-                    startTime = userStartTime;
-                    endTime = userEndTime;
-                }else if(userEndTime.equals(lastUserEndTime)){
-                    startTime = userStartTime;
-                    endTime = lastUserEndTime;
-                }
+        LocalTime userStartTime = user.get(0); // 비교할 user 매칭가능 시작시간
+        LocalTime userEndTime = user.get(1);
+        LocalTime lastUserStartTime = lastUser.get(0); // 마지막으로 배열에 들어온 user 매칭가능 시작시간
+        LocalTime lastUserEndTime = lastUser.get(1);
+        // 겹치는 시간 파악 후
+        LocalTime startTime = null;
+        LocalTime endTime = null;
+        if(userStartTime.isAfter(lastUserStartTime)){
+            if(lastUserEndTime.isBefore(userStartTime) || lastUserEndTime.equals(userStartTime)){
+                System.out.println("두 user는 시간이 겹치지 않습니다.");
+                startTime = null;
+                endTime = null;
             }
-            if(lastUserStartTime.isAfter(userStartTime)){
-                if(userEndTime.isBefore(lastUserStartTime) || userEndTime.equals(lastUserStartTime)){
-                    System.out.println("두 user는 시간이 겹치지 않습니다.");
-                    startTime = null;
-                    endTime = null;
-                }
-                else if(lastUserEndTime.isAfter(userEndTime)){
-                    startTime = lastUserStartTime;
-                    endTime = userEndTime;
-                }
-                else if(lastUserEndTime.isBefore(userEndTime)){
-                    startTime = lastUserStartTime;
-                    endTime = lastUserEndTime;
-                }
-                else if(lastUserEndTime.equals(userEndTime)){
-                    startTime = lastUserStartTime;
-                    endTime = lastUserEndTime;
-                }
+            else if(userEndTime.isAfter(lastUserEndTime)){
+                startTime = userStartTime;
+                endTime = lastUserEndTime;
+            }else if(userEndTime.isBefore(lastUserEndTime)){
+                startTime = userStartTime;
+                endTime = userEndTime;
+            }else if(userEndTime.equals(lastUserEndTime)){
+                startTime = userStartTime;
+                endTime = lastUserEndTime;
             }
-            if(userStartTime.equals(lastUserStartTime)){
-                if(userEndTime.equals(lastUserEndTime)){
-                    startTime = userStartTime;
-                    endTime = userEndTime;
-                }
-                else if(userEndTime.isAfter(lastUserEndTime)){
-                    startTime = userStartTime;
-                    endTime = lastUserEndTime;
-                }
-                else if(userEndTime.isBefore(lastUserEndTime)){
-                    startTime = userStartTime;
-                    endTime = userEndTime;
-                }
+        }
+        if(lastUserStartTime.isAfter(userStartTime)){
+            if(userEndTime.isBefore(lastUserStartTime) || userEndTime.equals(lastUserStartTime)){
+                System.out.println("두 user는 시간이 겹치지 않습니다.");
+                startTime = null;
+                endTime = null;
             }
+            else if(lastUserEndTime.isAfter(userEndTime)){
+                startTime = lastUserStartTime;
+                endTime = userEndTime;
+            }
+            else if(lastUserEndTime.isBefore(userEndTime)){
+                startTime = lastUserStartTime;
+                endTime = lastUserEndTime;
+            }
+            else if(lastUserEndTime.equals(userEndTime)){
+                startTime = lastUserStartTime;
+                endTime = lastUserEndTime;
+            }
+        }
+        if(userStartTime.equals(lastUserStartTime)){
+            if(userEndTime.equals(lastUserEndTime)){
+                startTime = userStartTime;
+                endTime = userEndTime;
+            }
+            else if(userEndTime.isAfter(lastUserEndTime)){
+                startTime = userStartTime;
+                endTime = lastUserEndTime;
+            }
+            else if(userEndTime.isBefore(lastUserEndTime)){
+                startTime = userStartTime;
+                endTime = userEndTime;
+            }
+        }
         System.out.println("시작시간은 : " +startTime);
         System.out.println("끝 시간은 : " + endTime);
         List<LocalTime> times  = new ArrayList<>();
@@ -217,13 +215,13 @@ public class MatchingService {
                         userCount = 0;
 
                         // 학번 배열 생성, set
-                        List<String> studentIdList = new ArrayList<>();
+                        List<String> emailList = new ArrayList<>();
                         for (int k = 0; k <= publicUsersList.size() - 1; k++) {
-                            String studentId = publicUsersList.get(k).getStudentId();
-                            studentIdList.add(studentId);
+                            String studentId = publicUsersList.get(k).getEmail();
+                            emailList.add(studentId);
                         }
                         // 매칭된 학생들 학번 리스트
-                        matched.setStudentIdList(studentIdList);
+                        matched.setEmailList(emailList);
                         // 매칭 타입
                         matched.setMatchingType(userLast.getMatchingType());
                         // 매칭 가능한 요일
@@ -256,15 +254,13 @@ public class MatchingService {
         return null;
     };
 
-                //수업매칭
+    //수업매칭
     public ClassMatchedList findClassMatch(List<ClassMatching>userList , int count ){
 
         if(userList.size()<2){
             return null;
         }
         else{
-
-
             for(int i =0; i <= userList.size()-2; i++){
                 List<String>firstUserCourseNum = userList.get(i).getCourseNumber();
                 List<String>lastUserCourseNum = userList.get(userList.size()-1).getCourseNumber();
@@ -274,9 +270,7 @@ public class MatchingService {
                 //시간표가 겹치는 유저 찾아
                 List<String> courseNum = new ArrayList<>(findDuplicatesCourse(courseNumList));
                 System.out.println("겹치는 수업은 : " + courseNum + " 입니다");
-
                 // 마지막 요소와 시간요일,희망인원이 같은 요소있으면 배열 다 돌아
-
                 boolean head = (userList.get(i).getHeadCount())==(userList.get(userList.size()-1).getHeadCount());
                 if (head&&courseNum!=null) {
                     // 객체 생성
@@ -317,13 +311,13 @@ public class MatchingService {
                         userCount =0;
 
                         // 학번 배열 생성, set
-                        List<String> studentIdList = new ArrayList<>();
+                        List<String> emailList = new ArrayList<>();
                         for (int k = 0; k <= classUserList.size() - 1; k++) {
-                            String studentId = classUserList.get(k).getStudentId();
-                            studentIdList.add(studentId);
+                            String email = classUserList.get(k).getEmail();
+                            emailList.add(email);
                         }
                         // 매칭된 학생들 학번 리스트
-                        matched.setStudentIdList(studentIdList);
+                        matched.setEmailList(emailList);
                         // 매칭 타입
                         matched.setMatchingType(userLast.getMatchingType());
 
@@ -355,18 +349,22 @@ public class MatchingService {
         }
     }
 
-
+    @Autowired
+    NotificationService notificationService;
     public PublicMatchedList PublicMatch(PublicMatching user){
         // 매칭된 사람 수 = 희망인원
         int count = user.getHeadCount();
         publicLectureUsers.add(user);
         PublicMatchedList publicMatchedList = new PublicMatchedList();
-        publicMatchedList=findPublicMatch(publicLectureUsers,count);
-
-        if (publicMatchedList!=null){
-            publicMatchedListRepository.save(publicMatchedList);
+        publicMatchedList = findPublicMatch(publicLectureUsers, count);
+        if (publicMatchedList != null) {
+            publicMatchedListRepository.save(publicMatchedList); // 데베에 저장
+            PublicMatchedList finalPublicMatchedList = publicMatchedList;
+            notificationService.sendNotificationToUser(finalPublicMatchedList.getEmailList(), "매칭이 완료되었습니다");
+        }else{
+            return null;
         }
-        return publicMatchedList;
+        return  publicMatchedList;
     }
 
 
@@ -379,9 +377,13 @@ public class MatchingService {
         classMatchedList = findClassMatch(classLectureUsers,count);
 
         if (classMatchedList!=null){
-            classMatchedListRepository.save(classMatchedList);
+            classMatchedListRepository.save(classMatchedList); // 데베에 저장
+            ClassMatchedList finalClassMatchedList = classMatchedList;
+            notificationService.sendNotificationToUser(finalClassMatchedList.getEmailList(), "매칭이 완료되었습니다");
+        }else{
+            return null;
         }
-        return classMatchedList;
+        return  classMatchedList;
     }
 
     //수업 매칭 전부 반환

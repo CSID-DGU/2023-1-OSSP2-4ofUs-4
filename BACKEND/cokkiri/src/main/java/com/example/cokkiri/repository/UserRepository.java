@@ -8,7 +8,6 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, String> {
     public List<User> findByName(String name);
-
     public boolean existsById(String id);
     public boolean existsByIdAndAuthKey(String id,String authKey);
     public boolean existsByIdAndPasswordAndAuthTrue(String id,String password);
