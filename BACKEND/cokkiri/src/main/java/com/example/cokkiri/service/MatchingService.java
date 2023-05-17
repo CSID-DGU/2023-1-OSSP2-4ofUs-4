@@ -395,7 +395,7 @@ public class MatchingService {
 
     //수업 매칭 Id로 찾아서 반환
     public List<ClassMatchedList> findClassMatchingById(String id){
-        return classMatchedListRepository.findByStudentIdListContains(id);
+        return classMatchedListRepository.findByEmailListContains(id);
     }
 
     //공강 매칭 전부 반환
@@ -407,7 +407,7 @@ public class MatchingService {
 
     //공강 매칭 Id로 찾아서 반환
     public List<PublicMatchedList> findPublicMatchingById(String id){
-        return publicMatchedListRepository.findByStudentIdListContains(id);
+        return publicMatchedListRepository.findByEmailListContains(id);
     }
 
 }

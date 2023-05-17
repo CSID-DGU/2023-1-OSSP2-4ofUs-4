@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public  interface PublicMatchedListRepository extends JpaRepository<PublicMatchedList,Integer> {
-    public List<PublicMatchedList> findByStudentIdListContains(String id);
+    public List<PublicMatchedList> findByEmailListContains(String id);
 }
